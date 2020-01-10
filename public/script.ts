@@ -1,17 +1,15 @@
-const buttons: { button: HTMLButtonElement, sources: HTMLSourceElement[] }[] = [];
+const buttons: { button: HTMLButtonElement, sources: string[] }[] = [];
 const ambience: HTMLAudioElement = <HTMLAudioElement>document.getElementById("ambience");
+const effect: HTMLAudioElement = <HTMLAudioElement>document.getElementById("effect");
 
-async function loadAudioPath(path: string): Promise<HTMLSourceElement[]> {
+async function loadAudioPath(path: string): Promise<string[]> {
 	return new Promise(function(res, rej) {
 		makeRequest("GET", path, 'document').then((value: XMLHttpRequest) => {
-			let ret: HTMLSourceElement[] = [];
+			let ret: string[] = [];
 			let elements = (<Document>(value.responseXML)).children[0].children[1].children[1].children[1].children;
 			for (let x = 1; x < elements.length; x++) {
 				if (elements[x].children[0].children[0].innerHTML.match(/\.(mp3)$/)) {
-					let source = document.createElement('source');
-					source.src = path+"/"+elements[x].children[0].children[0].innerHTML;
-					source.type = "audio/mpeg";
-					ret.push(source);
+					ret.push(path+"/"+elements[x].children[0].children[0].innerHTML);
 				}
 			}
 			res(ret);
@@ -19,17 +17,23 @@ async function loadAudioPath(path: string): Promise<HTMLSourceElement[]> {
 	});
 }
 
-async function loadAudio(sounds: {ambience: HTMLSourceElement[], soundEffects: HTMLSourceElement[]}) {
-	let promises = <Promise<HTMLSourceElement[] | null | void>[]>[];
-	promises.push(loadAudioPath("/resources/sounds/ambience").then((value: HTMLSourceElement[]) => {
-		for (let e of value) {
-			sounds.ambience.push(e);
-		}
+async function loadAudio(sounds: {ambience: string[], soundEffects: string[]}) {
+	let promises = <Promise<string[] | null | void>[]>[];
+	promises.push(loadAudioPath("/resources/sounds/ambience").then((value: string[]) => {
+		return new Promise((res) => {
+			for (let e of value) {
+				sounds.ambience.push(e);
+			}
+			res();
+		});		 
 	}));
-	promises.push(loadAudioPath("/resources/sounds/soundEffects").then((value: HTMLSourceElement[]) => {
-		for (let e of value) {
-			sounds.soundEffects.push(e);
-		}
+	promises.push(loadAudioPath("/resources/sounds/soundEffects").then((value: string[]) => {
+		return new Promise((res) => {
+			for (let e of value) {
+				sounds.soundEffects.push(e);
+			}
+			res();
+		});
 	}));
 	await Promise.all(promises);
 }
@@ -59,25 +63,26 @@ function makeRequest(method: string, url: string, responseType: XMLHttpRequestRe
 	});
 }
 
-function addButtons(parent: HTMLElement, sources: HTMLSourceElement[]) {
+function addButtons(buttonParent: HTMLElement, sources: string[], audioParent: HTMLAudioElement) {	
 	for (let source of sources) {
-		let name = ((source.src.match(/\/([a-z]|%20|-)+\d*\.mp3/i)||[])[0].match(/([a-z]|%20|-)+/i)||[])[0].replace("%20", " ");
+		let name = ((source.match(/\/([a-z]| |-)+\d*\.mp3/i)||[])[0].match(/([a-z]| |-)+/i)||[])[0];
 		let b = buttons.filter((el) => el.button.innerHTML === name)[0];
 		if (b === undefined) {// If the sound has not been registered yet
 			let nBut = document.createElement("button");
 			nBut.innerHTML = name;
 			b = buttons[buttons.push({button: nBut, sources: [source]})-1];
 			b.button.onclick = () => {
-				let audio: HTMLAudioElement = <HTMLAudioElement>document.createElement("AUDIO");
-				audio.appendChild(b.sources[Math.floor(Math.random()*b.sources.length)]);
-				audio.style.display = 'hidden';
-				document.body.appendChild(audio);
-				audio.play();
-				audio.onended = () => {
-					audio.remove();
+				if (!audioParent.paused) {
+					audioParent.pause();
+					return;
 				}
+				audioParent.pause();
+				audioParent.currentTime = 0;
+				(<HTMLSourceElement>audioParent.children[0]).src = b.sources[Math.floor(Math.random()*b.sources.length)];
+				audioParent.load();
+				audioParent.play();
 			}			
-			parent.appendChild(b.button);
+			buttonParent.appendChild(b.button);
 		} else {
 			b.sources.push(source);
 		}
@@ -86,11 +91,11 @@ function addButtons(parent: HTMLElement, sources: HTMLSourceElement[]) {
 
 (async function init() {
 	const sounds = {
-		ambience: <HTMLSourceElement[]>[],
-		soundEffects: <HTMLSourceElement[]>[]
+		ambience: <string[]>[],
+		soundEffects: <string[]>[]
 	};
 	await loadAudio(sounds);
 
-	addButtons(document.body, sounds.ambience);
-	addButtons(document.body, sounds.soundEffects);
+	addButtons(document.body, sounds.ambience, ambience);
+	addButtons(document.body, sounds.soundEffects, effect);
 })();
