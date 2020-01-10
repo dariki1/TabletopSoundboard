@@ -1,6 +1,114 @@
 [
 	{
-		"fileName": "exampleSound.mp3",
-		"displayName": "Example Sound"
+		"fileName": "blowOffDoors.mp3",
+		"displayName": "Open Door"
+	},
+	{
+		"fileName": "closingTheDoor.mp3",
+		"displayName": "Close Door"
+	},
+	{
+		"fileName": "errorsHaveBeenMade.mp3",
+		"displayName": "Mistake"
+	},
+	{
+		"fileName": "fBIOpenUp.mp3",
+		"displayName": "Open Door"
+	},
+	{
+		"fileName": "fFVictory.mp3",
+		"displayName": "Victory"
+	},
+	{
+		"fileName": "found.mp3",
+		"displayName": "Spotted"
+	},
+	{
+		"fileName": "ghandiExplosion.mp3",
+		"displayName": "Explosion"
+	},
+	{
+		"fileName": "hammerDown.mp3",
+		"displayName": "Hammer"
+	},
+	{
+		"fileName": "hammerTime.mp3",
+		"displayName": "Hammer"
+	},
+	{
+		"fileName": "heroesNeverDie.mp3",
+		"displayName": "Ressurect"
+	},
+	{
+		"fileName": "hulkSmash.mp3",
+		"displayName": "Smash"
+	},
+	{
+		"fileName": "ifIHadAWatch.mp3",
+		"displayName": "Hurry Up"
+	},
+	{
+		"fileName": "imAlwaysAngry.mp3",
+		"displayName": "???"
+	},
+	{
+		"fileName": "itemGet.mp3",
+		"displayName": "Found/Got Something"
+	},
+	{
+		"fileName": "iWouldLikeToRage.mp3",
+		"displayName": "Rage"
+	},
+	{
+		"fileName": "leeroyJenkins.mp3",
+		"displayName": "Charge"
+	},
+	{
+		"fileName": "mother.mp3",
+		"displayName": "Insult"
+	},
+	{
+		"fileName": "ohMy.mp3",
+		"displayName": "( ͡° ͜ʖ ͡°)"
+	},
+	{
+		"fileName": "punyGod.mp3",
+		"displayName": "Smash"
+	},
+	{
+		"fileName": "rageAndRun.mp3",
+		"displayName": "???"
+	},
+	{
+		"fileName": "screamExternal.mp3",
+		"displayName": "Scream"
+	},
+	{
+		"fileName": "screamInternal.mp3",
+		"displayName": "Scream"
+	},
+	{
+		"fileName": "splat.mp3",
+		"displayName": "Splat"
+	},
+	{
+		"fileName": "wakeMeUp.mp3",
+		"displayName": "Ressurect"
+	},
+	{
+		"fileName": "wakeUp.mp3",
+		"displayName": "Ressurect"
+	},
+	{
+		"fileName": "wrongHouse.mp3",
+		"displayName": "Close Door"
+	},
+	{
+		"fileName": "youAreFailing.mp3",
+		"displayName": "Mistake"
+	},
+	{
+		"fileName": "zipper.mp3",
+		"displayName": "( ͡° ͜ʖ ͡°)"
 	}
 ]
